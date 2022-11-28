@@ -2,18 +2,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 float calculo_media(float a, float b, float c);
-int
-main ()
-{
-
-  int opcao = 0, opcao_alunos, opcao_disciplinas, opcao_notas, confirma_saida;
-  float media_notas;
-  FILE *fp;
-  system("color 0B");
-  struct notas {
+struct notas {
       int matricula,cod_disciplina,frequencia;
       float nota1,nota2,nota3,media;
   };
+int main (){
+  int opcao = 0, opcao_alunos, opcao_disciplinas, opcao_notas, confirma_saida,tam_arq;
+  int i;
+  float media_notas;
+  FILE *fp;
+  struct notas *p;
+  system("color 0B");
+  
   struct notas buffer;
   while (opcao !=4) 
    {
@@ -68,6 +68,7 @@ case 2:
  break;
 
 case 3:
+  opcao_notas = 0;
   while (opcao_notas != 5){
         system ("cls");
         printf ("_____________________________________________\n\n");
@@ -94,7 +95,7 @@ case 3:
                                   if(fp == NULL) {
                                       printf("Erro na abertura do arquivo");
                                       exit(1);
-}
+                                  }
                               fwrite(&buffer,sizeof(struct notas),1,fp);
                               fclose(fp);
                               printf("Cadastro realizado com sucesso!\n");
@@ -103,15 +104,23 @@ case 3:
                         break;
                         case 2: 
                         break;
-                        case 3: //ignorem o caso 3 por enquanto, ainda não está funcional.
-                              fopen ("notas.txt", "r");
-                              if(fp == NULL) {
-                                      printf("Erro na abertura do arquivo");
-                                      exit(1);
-}
-                              fread(&buffer,sizeof(struct notas),1,fp);
-                              printf("%d %d %f %f %f %f %d", buffer.matricula,buffer.cod_disciplina, buffer.nota1,buffer.nota2,buffer.nota3,buffer.media,buffer.frequencia);
+                        case 3: 
+                              fp =  fopen ("notas.txt", "r");
+                                  if(fp == NULL) {
+                                          printf("Erro na abertura do arquivo");
+                                          exit(1);
+                                  }
+                              fseek(fp,0*sizeof(struct notas),SEEK_END);
+                              tam_arq = ftell(fp)/sizeof(struct notas);
+                              fseek(fp,0*sizeof(struct notas),SEEK_SET);
+                              p = (struct notas*)malloc(sizeof(struct notas)*tam_arq);
+                              fread(p,sizeof(struct notas),tam_arq,fp);
+                                  for(i=0;i<tam_arq;i++){  
+                                      printf("Matricula: %d\nDisciplina: %d\nNotas: %.1f %.1f %.1f\nMedia: %.1f\nFrequencia: %d%%\n\n",p[i].matricula,p[i].cod_disciplina, p[i].nota1,p[i].nota2,p[i].nota3,p[i].media,p[i].frequencia);
+                                  }
+                              free(p);
                               fclose(fp);
+                              printf("Digite 1 se deseja continuar em notas, e digite 5 se deseja retornar ao menu inicial\n");
                               scanf("%d", &opcao_notas);
                         break;
                         case 4:
