@@ -6,15 +6,24 @@ struct notas {
       int matricula,cod_disciplina,frequencia;
       float nota1,nota2,nota3,media;
   };
+
+struct disciplinas {
+    char nome[50];
+    int codigo;
+};
+
 int main (){
-  int opcao = 0, opcao_alunos, opcao_disciplinas, opcao_notas, confirma_saida,tam_arq;
+  int opcao = 0, opcao_alunos, opcao_disciplinas, opcao_notas, confirma_saida, tam_arq;
   int i;
   float media_notas;
   FILE *fp;
+  struct disciplinas *ptr;
   struct notas *p;
   system("color 0B");
   
   struct notas buffer;
+  struct disciplinas bufdisc;
+
   while (opcao !=4) 
    {
       system ("cls");  
@@ -49,6 +58,8 @@ case 1:
             
  break;
 case 2:
+opcao_disciplinas = 0;
+while(opcao_disciplinas != 5){
 
  system ("cls");
  printf ("_____________________________________________\n\n");
@@ -61,8 +72,43 @@ case 2:
  printf ("_____________________________________________\n\n");
  printf ("Digite o numero respectivo ao que deseja fazer:\n");
  scanf ("%d", &opcao_disciplinas);
-            if (opcao_disciplinas == 5)
+ system("cls");
+
+             switch (opcao_disciplinas)
+             {
+                case 1:
+                    printf("Digite o nome da disciplina:\n");
+                    scanf("%s", &bufdisc.nome);
+                    printf("Digite o codigo da disciplina:\n");
+                    scanf("%d", &bufdisc.codigo);
+                
+                    fp = fopen("disciplinas.txt", "a");
+                        if( fp == NULL)
+                         {
+                             printf("Erro na abertura o arquivo\n");
+                             exit(1);
+                         }
+                    fwrite(&bufdisc, sizeof(struct disciplinas), 1, fp);
+                    fclose(fp);
+                    printf("Cadastro de disciplina realizado com sucesso\n");
+                    printf("Digite 1 se deseja continuar em notas, e digite 5 se deseja retornar ao menu inicial\n");
+                    scanf("%d", &opcao_disciplinas);
+                    break;
+
+                case 2:
                 break;
+                case 3:
+                    fp = fopen ("disciplinas.txt", "r");
+                        if (fp == NULL)
+                        {
+                            printf("Erro na abertura do arquivo");
+                            exit(1);
+                        }
+                    fseek(fp, 0*sizeof(struct disciplinas), SEEK_END);
+                    tam_arq = ftell(fp)/sizeof(struct disciplinas); 
+             }
+
+ }
             
 
  break;
@@ -84,7 +130,7 @@ case 3:
         system ("cls");
                     switch (opcao_notas){
                         case 1:  
-                              printf("Digite a matricula e o codigo da disciplina: \n");
+                              printf("Digite a matricula e o codigo da disciplina:\n");
                               scanf("%d%d", &buffer.matricula,&buffer.cod_disciplina);
                               printf("Digite as 3 notas: \n");
                               scanf("%f%f%f", &buffer.nota1,&buffer.nota2,&buffer.nota3);
