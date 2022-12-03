@@ -89,7 +89,7 @@ case 3:
                               printf("Digite as 3 notas: \n");
                               scanf("%f%f%f", &buffer.nota1,&buffer.nota2,&buffer.nota3);
                               buffer.media = calculo_media(buffer.nota1,buffer.nota2,buffer.nota3);
-                              printf("Digite a frequencia do aluno: \n");
+                              printf("Digite a frequencia do aluno(%%): \n");
                               scanf("%d", &buffer.frequencia);
                               fp = fopen("notas.txt", "a");
                                   if(fp == NULL) {
