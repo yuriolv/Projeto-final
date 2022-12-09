@@ -91,21 +91,35 @@ while(opcao_disciplinas != 5){
                     fwrite(&bufdisc, sizeof(struct disciplinas), 1, fp);
                     fclose(fp);
                     printf("Cadastro de disciplina realizado com sucesso\n");
-                    printf("Digite 1 se deseja continuar em notas, e digite 5 se deseja retornar ao menu inicial\n");
+                    printf("Digite 1 se deseja continuar em disciplinas, e digite 5 se deseja retornar ao menu inicial\n");
                     scanf("%d", &opcao_disciplinas);
                     break;
 
                 case 2:
                 break;
                 case 3:
+                    case 3:
                     fp = fopen ("disciplinas.txt", "r");
                         if (fp == NULL)
                         {
                             printf("Erro na abertura do arquivo");
                             exit(1);
                         }
-                    fseek(fp, 0*sizeof(struct disciplinas), SEEK_END);
-                    tam_arq = ftell(fp)/sizeof(struct disciplinas); 
+                     fseek(fp, 0*sizeof(struct disciplinas), SEEK_END);
+                     tam_arq = ftell(fp)/sizeof(struct disciplinas);
+                     fseek(fp, 0*sizeof(struct notas), SEEK_SET);
+                     ptr = (struct disciplinas*) malloc(tam_arq*sizeof(struct disciplinas));
+                     fread(ptr, sizeof(struct disciplinas), tam_arq, fp);
+
+                     for(i=0; i<tam_arq; i++)
+                         {
+                             printf("Disciplina: %s\n Codigo: %d\n\n", ptr[i].nome, ptr[i].codigo);
+                         }
+                     free(ptr);
+                     fclose(fp);
+                     printf("Digite 1 se deseja continuar em disciplinas, e digite 5 se deseja retornar ao menu inicial\n");
+                     scanf("%d", &opcao_disciplinas);
+                     break;
              }
 
  }
