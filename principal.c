@@ -7,6 +7,11 @@ void menuAlunos();
 void menuNotas();
 void menuDisciplinas();
 
+void cadastraDisciplina();
+void editaDisciplina();
+void consultaDisciplina();
+void removeDisciplina();
+
 void cadastraAluno();
 void consultaAluno();
 void editarAluno();
@@ -100,59 +105,23 @@ int main(){
 
                 case 2:
                     opcao_disciplinas = 0;
-                        while(opcao_disciplinas != 5){
+                    while(opcao_disciplinas != 5){
 
-                            system ("cls");
-                            menuDisciplinas();
-                            scanf ("%d", &opcao_disciplinas);
-                            system("cls");
+                           menuDisciplinas();
 
                                 switch (opcao_disciplinas){
                                     case 1:
-                                        printf("Digite o nome da disciplina:\n");
-                                        scanf("%s", &bufdisc.nome);
-                                        printf("Digite o codigo da disciplina:\n");
-                                        scanf("%d", &bufdisc.codigo);
-
-                                        fp = fopen("disciplinas.txt", "a");
-                                            if( fp == NULL)
-                                             {
-                                                 printf("Erro na abertura o arquivo\n");
-                                                 exit(1);
-                                             }
-                                        fwrite(&bufdisc, sizeof(struct disciplinas), 1, fp);
-                                        fclose(fp);
-                                        printf("Cadastro de disciplina realizado com sucesso\n");
-                                        printf("Digite 1 se deseja continuar em disciplinas, e digite 5 se deseja retornar ao menu inicial\n");
-                                        scanf("%d", &opcao_disciplinas);
+                                        cadastraDisciplina();
                                     break;
-
+                                        
                                     case 2:
+                                        editaDisciplina();
                                     break;
+                                        
                                     case 3:
-                                        fp = fopen ("disciplinas.txt", "r");
-                                            if (fp == NULL)
-                                            {
-                                                printf("Erro na abertura do arquivo");
-                                                exit(1);
-                                            }
-                                         fseek(fp, 0*sizeof(struct disciplinas), SEEK_END);
-                                         tam = ftell(fp)/sizeof(struct disciplinas);
-                                         rewind(fp);
-                                         ptr = (struct disciplinas*) malloc(tam*sizeof(struct disciplinas));
-                                         fread(ptr, sizeof(struct disciplinas), tam, fp);
-
-                                         for(i=0; i<tam; i++)
-                                             {
-                                                 printf("Disciplina: %s\n Codigo: %d\n\n", ptr[i].nome, ptr[i].codigo);
-                                             }
-                                         free(ptr);
-                                         fclose(fp);
-                                         printf("Digite 1 se deseja continuar em disciplinas, e digite 5 se deseja retornar ao menu inicial\n");
-                                         scanf("%d", &opcao_disciplinas);
-                                         break;
+                                        consultaDisciplina();
+                                    break;
                                 }
-
  }
                 break;
 
@@ -469,6 +438,107 @@ void consultaAluno(){
     system("pause");
 
     free(p);
+}
+
+void cadastraDisciplina()
+{
+    int opcao_disciplinas;
+    disciplinas bufdisc;
+    FILE *fp;
+    
+    printf("Digite o nome da disciplina:\n");
+    scanf("%s", &bufdisc.nome);
+    printf("Digite o codigo da disciplina:\n");
+    scanf("%d", &bufdisc.codigo);
+                
+    fp = fopen("disciplinas.txt", "a");
+    if( fp == NULL)
+    {
+        printf("Erro na abertura o arquivo\n");
+        exit(1);
+    }
+    fwrite(&bufdisc, sizeof(struct disciplinas), 1, fp);
+    fclose(fp);
+    printf("Cadastro de disciplina realizado com sucesso\n");
+    printf("Digite 1 se deseja continuar em notas, e digite 5 se deseja retornar ao menu inicial\n");
+    scanf("%d", &opcao_disciplinas);
+}
+
+void editaDisciplina()
+{
+    FILE *fp;
+    int tam_arq, i;
+    disciplinas *pd;
+
+    fp = fopen ("disciplinas.txt", "r");
+    if (fp == NULL)
+    {
+        printf("Erro na abertura do arquivo");
+        exit(1);
+    }
+    fseek(fp, 0*sizeof(struct disciplinas), SEEK_END);
+    tam_arq = ftell(fp)/sizeof(struct disciplinas);
+    fseek(fp, 0*sizeof(struct notas), SEEK_SET);
+    pd = (struct disciplinas*) malloc(tam_arq*sizeof(struct disciplinas));
+    fread(pd, sizeof(struct disciplinas), tam_arq, fp);
+    fclose(fp);
+
+    fp = fopen("disciplinas.txt", "w");
+    if(fp == NULL)
+    {
+        printf("Erro na abertura do arquivo");
+        exit(1);
+    }
+
+    for(i=0; i<tam_arq; i++)
+    {
+        printf("Disciplina: %s\n Codigo: %d\n\n", pd[i].nome, pd[i].codigo);
+    }
+    int cod_disc;
+    printf("Digite o codigo da disciplina que quer editar:\n");
+    scanf("%d", &cod_disc);
+    printf("Digite o novo nome da disciplina:\n");
+    for(i=0; i<tam_arq; i++)
+    {
+        if(cod_disc == pd[i].codigo)
+        {   
+            scanf("%s", &pd[i].nome);
+        }
+    }
+    fwrite(pd, sizeof(struct disciplinas), tam_arq, fp);
+    printf("Alteracao realizada com sucesso\n");
+    free(pd);
+    fclose(fp);
+    system("pause");
+}
+
+cvoid consultaDisciplina()
+{
+    int opcao_disciplinas;
+    FILE *fp;
+    int tam_arq, i;
+    disciplinas *pa;
+
+    fp = fopen ("disciplinas.txt", "r");
+    if (fp == NULL)
+    {
+        printf("Erro na abertura do arquivo");
+        exit(1);
+    }
+    fseek(fp, 0*sizeof(struct disciplinas), SEEK_END);
+    tam_arq = ftell(fp)/sizeof(struct disciplinas);
+    fseek(fp, 0*sizeof(struct notas), SEEK_SET);
+    pa = (struct disciplinas*) malloc(tam_arq*sizeof(struct disciplinas));
+    fread(pa, sizeof(struct disciplinas), tam_arq, fp);
+
+    for(i=0; i<tam_arq; i++)
+    {
+        printf("Disciplina: %s\n Codigo: %d\n\n", pa[i].nome, pa[i].codigo);
+    }
+    free(pa);
+    fclose(fp);
+    printf("Digite 1 se deseja continuar em disciplinas, e digite 5 se deseja retornar ao menu inicial\n");
+    scanf("%d", &opcao_disciplinas);
 }
 
 void cadastrarNotas(){
