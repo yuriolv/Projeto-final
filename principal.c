@@ -687,8 +687,9 @@ void consultarNotas(){
 
 void removeNotas(){
     FILE *fp;
-    int tam,i,buffer_notas;
+    int tam,i,buffer_notas,buffer_notas2,j=0,resultado;
     struct disciplinas *ptr;
+    struct notas *p,*p2;
     fp = fopen ("disciplinas.txt", "r");
        if (fp == NULL)
        {
@@ -708,8 +709,47 @@ void removeNotas(){
     scanf("%d", &buffer_notas);
     free(ptr);
     fclose(fp);
-    consultarNotas();
-    
+    system("cls");
+    printf("Digite a matricula do aluno que quer remover em notas:\n");
+    fp = fopen("notas.txt","r");
+        if(fp == NULL) {
+                printf("Erro na abertura do arquivo");
+                exit(1);
+      }
+    fseek(fp,sizeof(struct notas)*0,SEEK_END);
+    tam = ftell(fp)/sizeof(struct notas);
+    rewind(fp);
+    p = (struct notas*)malloc(sizeof(struct notas)*tam);
+    fread(p,sizeof(struct notas),tam,fp);
+    fclose(fp);
+    printf("Alunos matriculados na disciplina %d:\n", buffer_notas);
+        for(i=0;i<tam;i++){
+            if(buffer_notas == p[i].cod_disciplina){//mostra todas as matriculas cadastradas naquela disciplina.
+                printf(" Matricula: %d\n Disciplina: %d\n Notas: %.1f %.1f %.1f\n Media: %.1f\n"
+                " Frequencia: %d%%\n\n",p[i].matricula,p[i].cod_disciplina, p[i].nota1,p[i].nota2,p[i].nota3,p[i].media,p[i].frequencia);
+            }
+        }
+    printf("Digite a matricula do aluno que deseja remover em notas:\n");
+    scanf("%d",&buffer_notas2);
+    fp = fopen("notas.txt", "w");
+        if(fp == NULL) {
+                printf("Erro na abertura do arquivo");
+                exit(1);
+      }
+    tam--;
+    p2 = (struct notas*)malloc(sizeof(struct notas)*tam);
+    for(i=0;i<=tam;i++){
+        if(buffer_notas != p[i].cod_disciplina && buffer_notas2 != p[i].matricula){
+             p2[j] = p[i];
+             j++;
+        }
+    }
+    free(p);
+    fwrite(p2,sizeof(struct notas),tam,fp);
+    free(p2);
+    fclose(fp);
+    printf("Nota removida com sucesso!\n");
+    system("pause");
 }
 
 float calculo_media(float a, float b, float c)
