@@ -15,6 +15,7 @@ void removeDisciplina();
 void cadastraAluno();
 void consultaAluno();
 void editarAluno();
+void removeAluno();
 
 void cadastrarNotas();
 void editarNotas();
@@ -54,7 +55,6 @@ int main(){
     
     struct disciplinas *ptr;
 
-    alunos *pa;
 
     system("color 0B");
 
@@ -74,28 +74,42 @@ int main(){
                         opcao_alunos=0;
 
                         while(opcao_alunos != 5){
-
+                        
+                        system("cls");
                         menuAlunos();
                         scanf("%d", &opcao_alunos);
 
                         switch(opcao_alunos){
 
                             case 1:
+                                system("cls");
                                 cadastraAluno();
                             break;
 
                             case 2:
+                                system("cls");
                                 editarAluno();
                             break;
 
                             case 3:
+                                system("cls");
                                 consultaAluno();
                             break;
+                            
+                            case 4:
+                                system("cls");
+                                removeAluno();
+                                break;
+                            
+                            case 5:
+                                system("cls");
+                                opcao_alunos=5;
+                                break;
+                                
 
                             default:
                                 printf("Por favor digite apenas numeros"
                                     " de 1 a 5");
-                            break;
 
                          };
 
@@ -108,6 +122,7 @@ int main(){
                     while(opcao_disciplinas != 5){
 
                            menuDisciplinas();
+                           scanf("%d", opcao_disciplinas);
 
                                 switch (opcao_disciplinas){
                                     case 1:
@@ -337,17 +352,17 @@ void cadastraAluno(){
     system("pause");
 }
 
+
 void editarAluno(){
     FILE *fp;
 
     alunos *p;
 
-    int i, tam, matri, alvo, cont=0;
+    int i, tam, cont=0;
 
     fp = fopen("arq_alunos.txt", "r");
     if(!fp){
-        printf("Erro ao acessar o arquivo, impossivel"
-               "prosseguir com alteração");
+        printf("Erro ao acessar o arquivo, impossivel prosseguir com alteração");
         return;
     }
     fseek(fp, 0, 2);
@@ -359,33 +374,62 @@ void editarAluno(){
     p = (alunos *) malloc(tam * sizeof(alunos));
 
     if(!p){
-        printf("Erro ao alocar memoria, impossivel "
-               "prosseguir com alteração");
-               return;
+        printf("Erro ao alocar memoria, impossivel prosseguir com alteração");
+        return;
     }
 
     fread(p, sizeof(alunos), tam, fp);
 
     fclose(fp);
 
-    printf("Digite o numero de matricula do aluno"
-           " que deseja editar\n");
-
-    scanf("%d", &matri);
-
+    printf("__________________________________________\n");
+    printf("Numero - Nome - Endereco - Matricula - telefone\n");
     for(i=0; i<tam; i++){
-        if(p[i].matricula==matri){
-            alvo = i;
-            cont++;
-            break;
-        }
+      printf("__________________________________________\n");
+
+        printf("%d - %s - %s - %d - %d\n", i+1, p[i].nome,
+                p[i].endereco, p[i].matricula, p[i].telefone);
+
+
+
     }
-    if(cont !=0){
-    printf("Numero de matricula não encontrado\n");
-    system("pause");
-    return;
+    printf("Digite o numero respectivo ao do aluno que deseja editar\n");
+
+    scanf("%d", &i);
+
+    i--;
+
+    printf("Digite o nome do aluno:\n");
+
+    setbuf(stdin, NULL);
+    gets(p[i].nome);
+
+    printf("\nInsira o endereço do aluno:\n");
+
+    setbuf(stdin,  NULL);
+    gets(p[i].endereco);
+
+    printf("\ninsira o numero de matricula:\n");
+
+    scanf("%d", &p[i].matricula);
+
+    printf("\ninsira o telefone (somente numeros):\n");
+
+    scanf("%d", &p[i].telefone);
+
+    fp = fopen("arq_alunos.txt", "w");
+    
+    if(!p){
+        printf("Erro ao acessar arquivo, impossivel prosseguir com alteração");
+        return;
     }
-    printf("dados do aluno: ");
+   
+    fwrite(p, sizeof(alunos), tam, fp);
+   
+   
+    fclose(fp);
+    free(p);
+    
 }
 
 
@@ -434,10 +478,86 @@ void consultaAluno(){
 
 
     }
-    scanf("%d", &i);
     system("pause");
 
     free(p);
+}
+
+void removeAluno(){
+    FILE *fp;
+    alunos *p, *ptr_aux;
+    int i=0, j=0, posi, tam;
+    
+    fp = fopen("arq_alunos.txt", "r");
+    if(!fp){
+        printf("Erro ao acessar arquivo, impossivel prosseguir remoção");
+        system("pause");
+        return;
+    }
+    fseek(fp, sizeof(alunos)*0, SEEK_END);
+    
+    tam= ftell(fp)/sizeof(alunos);
+    
+    rewind(fp);
+    
+    p = (alunos *) malloc(tam*sizeof(alunos));
+    if(!p){
+        printf("erro ao alocar memoria, impossivel excluir\n");
+        system("pause");
+        return;
+        
+    }
+    fwrite(p, sizeof(alunos), tam, fp);
+    
+    fclose(fp);
+    
+    consultaAluno();
+    
+    printf("digite o numero respectivo ao que deseja remover\n");
+    scanf("%d", &posi);
+    
+    posi--;
+    
+    tam--;
+    
+    ptr_aux=(alunos *) malloc(tam*sizeof(alunos));
+    if(!ptr_aux){
+        printf("erro ao alocar memoria, impossivel excluir\n");
+        system("pause");
+        return;
+        
+    }
+    while(i<=tam){
+        
+        if(i!= posi){
+        ptr_aux[j] = p[i];
+        
+        j++;
+        }
+        
+        i++;
+        
+    }
+    
+    
+    free(p);
+    
+    fp = fopen("arq_alunos.txt", "w");
+    
+    fwrite(ptr_aux, sizeof(alunos), tam, fp);
+    
+    fclose(fp);
+    
+    free(ptr_aux);
+    
+    printf("\naluno removido com sucesso!\n");
+    
+    system("pause");
+    
+    
+   
+    
+    
 }
 
 void cadastraDisciplina()
@@ -512,7 +632,7 @@ void editaDisciplina()
     system("pause");
 }
 
-cvoid consultaDisciplina()
+void consultaDisciplina()
 {
     int opcao_disciplinas;
     FILE *fp;
@@ -731,11 +851,7 @@ void removeNotas(){
         }
     printf("Digite a matricula do aluno que deseja remover em notas:\n");
     scanf("%d",&buffer_notas2);
-    fp = fopen("notas.txt", "w");
-        if(fp == NULL) {
-                printf("Erro na abertura do arquivo");
-                exit(1);
-      }
+    
     tam--;
     p2 = (struct notas*)malloc(sizeof(struct notas)*tam);
     for(i=0;i<=tam;i++){
@@ -745,6 +861,11 @@ void removeNotas(){
         }
     }
     free(p);
+    fp = fopen("notas.txt", "w");
+        if(fp == NULL) {
+                printf("Erro na abertura do arquivo");
+                exit(1);
+      }
     fwrite(p2,sizeof(struct notas),tam,fp);
     free(p2);
     fclose(fp);
