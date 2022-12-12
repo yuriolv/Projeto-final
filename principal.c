@@ -119,11 +119,9 @@ int main(){
                 case 2:
                     opcao_disciplinas = 0;
                     while(opcao_disciplinas != 5){
-
-                           system("cls");
                            menuDisciplinas();
                            scanf("%d", &opcao_disciplinas);
-                           
+                           system("cls");       
 
                                 switch (opcao_disciplinas){
                                     case 1:
@@ -140,13 +138,12 @@ int main(){
                                     case 3:
                                         system("cls");
                                         consultaDisciplina();
-                                        scanf("%d", &opcao_disciplinas);
-                                        break;
+                                    break;
 
                                     case 4:
                                         system("cls");
                                         removeDisciplina();
-                                        break;
+                                    break;
                                 }
  }
                 break;
@@ -302,6 +299,8 @@ void menuNotas()
 
 void menuDisciplinas()
 {
+     system("cls");
+
      printf("_____________________________________________\n\n");
 
      printf("-----------------Disciplinas----------------\n\n");
@@ -563,7 +562,8 @@ void cadastraDisciplina()
     FILE *fp;
     
     printf("Digite o nome da disciplina:\n");
-    scanf("%s", &bufdisc.nome);
+    setbuf(stdin, NULL);
+    gets(bufdisc.nome);
     printf("Digite o codigo da disciplina:\n");
     scanf("%d", &bufdisc.codigo);
                 
@@ -617,7 +617,8 @@ void editaDisciplina()
     {
         if(cod_disc == pd[i].codigo)
         {   
-            scanf("%s", &pd[i].nome);
+            setbuf(stdin, NULL);
+            gets(pd[i].nome);
         }
     }
     fwrite(pd, sizeof(struct disciplinas), tam_arq, fp);
@@ -652,7 +653,7 @@ void consultaDisciplina()
     }
     free(pa);
     fclose(fp);
-    printf("Digite 1 se deseja continuar em disciplinas, e digite 5 se deseja retornar ao menu inicial\n");
+    system("pause");
 }
 
 void removeDisciplina()
@@ -685,7 +686,7 @@ void removeDisciplina()
 
     for(i=0; i<tam; i++)
     {
-        printf("%d)Codigo de disciplina: %d\nNome: %s\n", i+1, pa[i].codigo, pa[i].nome);
+        printf(" %d) Codigo de disciplina: %d\nNome: %s\n\n", i+1, pa[i].codigo, pa[i].nome);
     }
 
     printf("Digite o numero respectivo a disciplina que deseja remover\n");
