@@ -122,18 +122,21 @@ int main(){
                     while(opcao_disciplinas != 5){
 
                            menuDisciplinas();
-                           scanf("%d", opcao_disciplinas);
+                           scanf("%d", &opcao_disciplinas);
 
                                 switch (opcao_disciplinas){
                                     case 1:
+                                        system("cls");
                                         cadastraDisciplina();
                                     break;
                                         
                                     case 2:
+                                         system("cls");
                                         editaDisciplina();
                                     break;
                                         
                                     case 3:
+                                        system("cls");
                                         consultaDisciplina();
                                     break;
                                 }
