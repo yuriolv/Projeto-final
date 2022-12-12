@@ -35,10 +35,10 @@ typedef struct alunos{
 
     int matricula, telefone;
 }alunos;
-struct disciplinas {
+typedef struct disciplinas {
     char nome[50];
     int codigo;
-};
+} disciplinas;
 
 int main(){
     int opcao = 0, opcao_alunos, opcao_disciplinas,
