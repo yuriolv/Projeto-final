@@ -23,7 +23,6 @@ void consultarNotas();
 void removeNotas();
 
 float calculo_media(float a, float b, float c);
-
 struct notas{
     int matricula, cod_disciplina, frequencia;
 
@@ -510,7 +509,7 @@ void removeAluno(){
         return;
         
     }
-    fwrite(p, sizeof(alunos), tam, fp);
+    fread(p, sizeof(alunos), tam, fp);
     
     fclose(fp);
     
@@ -522,36 +521,27 @@ void removeAluno(){
     posi--;
     
     tam--;
-    
-    ptr_aux=(alunos *) malloc(tam*sizeof(alunos));
-    if(!ptr_aux){
-        printf("erro ao alocar memoria, impossivel excluir\n");
+    while(posi<=tam){
+        p[posi] = p[posi+1];
+        posi++;
+        
+    }
+
+    p = (alunos *) realloc(p,tam*sizeof(alunos));
+    if(!p){
+        printf("erro ao realocar memoria, impossivel excluir\n");
         system("pause");
         return;
         
     }
-    while(i<=tam){
-        
-        if(i!= posi){
-        ptr_aux[j] = p[i];
-        
-        j++;
-        }
-        
-        i++;
-        
-    }
-    
-    
-    free(p);
     
     fp = fopen("arq_alunos.txt", "w");
     
-    fwrite(ptr_aux, sizeof(alunos), tam, fp);
+    fwrite(p, sizeof(alunos), tam, fp);
     
     fclose(fp);
     
-    free(ptr_aux);
+    free(p);
     
     printf("\naluno removido com sucesso!\n");
     
@@ -810,9 +800,9 @@ void consultarNotas(){
 
 void removeNotas(){
     FILE *fp;
-    int tam,i,buffer_notas,buffer_notas2,j=0,resultado;
+    int tam,i,buffer_notas,buffer_notas2,j=0,*pos;
     struct disciplinas *ptr;
-    struct notas *p,*p2;
+    struct notas *p;
     fp = fopen ("disciplinas.txt", "r");
        if (fp == NULL)
        {
@@ -846,31 +836,39 @@ void removeNotas(){
     fread(p,sizeof(struct notas),tam,fp);
     fclose(fp);
     printf("Alunos matriculados na disciplina %d:\n", buffer_notas);
+    pos = (int*)malloc(sizeof(int)*tam);
+        if(!pos){
+            printf("Nao foi possivel concluir a remocao");
+            system("pause");
+            return;
+        }
         for(i=0;i<tam;i++){
             if(buffer_notas == p[i].cod_disciplina){//mostra todas as matriculas cadastradas naquela disciplina.
-                printf(" Matricula: %d\n Disciplina: %d\n Notas: %.1f %.1f %.1f\n Media: %.1f\n"
-                " Frequencia: %d%%\n\n",p[i].matricula,p[i].cod_disciplina, p[i].nota1,p[i].nota2,p[i].nota3,p[i].media,p[i].frequencia);
+                pos[j] = i;
+                j++;
+                printf(" %d)Matricula: %d\n Disciplina: %d\n Notas: %.1f %.1f %.1f\n Media: %.1f\n"
+                " Frequencia: %d%%\n\n",j,p[i].matricula,p[i].cod_disciplina, p[i].nota1,p[i].nota2,p[i].nota3,p[i].media,p[i].frequencia);
             }
         }
-    printf("Digite a matricula do aluno que deseja remover em notas:\n");
-    scanf("%d",&buffer_notas2);
-    
+    pos = (int*)realloc(pos,sizeof(int)*(j+1));
+    printf("Digite a posicao do aluno que deseja remover em notas:\n");
+    scanf("%d",&i);
+    i--;
+    buffer_notas2 = pos[i];
+    free(pos);
     tam--;
-    p2 = (struct notas*)malloc(sizeof(struct notas)*tam);
-    for(i=0;i<=tam;i++){
-        if(buffer_notas != p[i].cod_disciplina && buffer_notas2 != p[i].matricula){
-             p2[j] = p[i];
-             j++;
+        while(buffer_notas2<=tam){
+            p[buffer_notas2] = p[buffer_notas2 + 1];
+            buffer_notas2++;
         }
-    }
-    free(p);
+    p = (struct notas*)realloc(p,sizeof(struct notas)*tam);
     fp = fopen("notas.txt", "w");
         if(fp == NULL) {
                 printf("Erro na abertura do arquivo");
                 exit(1);
       }
-    fwrite(p2,sizeof(struct notas),tam,fp);
-    free(p2);
+    fwrite(p,sizeof(struct notas),tam,fp);
+    free(p);
     fclose(fp);
     printf("Nota removida com sucesso!\n");
     system("pause");
