@@ -120,24 +120,33 @@ int main(){
                     opcao_disciplinas = 0;
                     while(opcao_disciplinas != 5){
 
+                           system("cls");
                            menuDisciplinas();
                            scanf("%d", &opcao_disciplinas);
+                           
 
                                 switch (opcao_disciplinas){
                                     case 1:
                                         system("cls");
                                         cadastraDisciplina();
+                                        
                                     break;
                                         
                                     case 2:
                                          system("cls");
-                                        editaDisciplina();
+                                         editaDisciplina();
                                     break;
                                         
                                     case 3:
                                         system("cls");
                                         consultaDisciplina();
-                                    break;
+                                        scanf("%d", &opcao_disciplinas);
+                                        break;
+
+                                    case 4:
+                                        system("cls");
+                                        removeDisciplina();
+                                        break;
                                 }
  }
                 break;
@@ -545,17 +554,11 @@ void removeAluno(){
     
     printf("\naluno removido com sucesso!\n");
     
-    system("pause");
-    
-    
-   
-    
-    
+    system("pause"); 
 }
 
 void cadastraDisciplina()
 {
-    int opcao_disciplinas;
     disciplinas bufdisc;
     FILE *fp;
     
@@ -573,8 +576,7 @@ void cadastraDisciplina()
     fwrite(&bufdisc, sizeof(struct disciplinas), 1, fp);
     fclose(fp);
     printf("Cadastro de disciplina realizado com sucesso\n");
-    printf("Digite 1 se deseja continuar em notas, e digite 5 se deseja retornar ao menu inicial\n");
-    scanf("%d", &opcao_disciplinas);
+    system("pause");
 }
 
 void editaDisciplina()
@@ -627,7 +629,7 @@ void editaDisciplina()
 
 void consultaDisciplina()
 {
-    int opcao_disciplinas;
+    
     FILE *fp;
     int tam_arq, i;
     disciplinas *pa;
@@ -651,7 +653,66 @@ void consultaDisciplina()
     free(pa);
     fclose(fp);
     printf("Digite 1 se deseja continuar em disciplinas, e digite 5 se deseja retornar ao menu inicial\n");
-    scanf("%d", &opcao_disciplinas);
+}
+
+void removeDisciplina()
+{
+    FILE *fp;
+    disciplinas *pa;
+    int i, tam;
+
+    fp = fopen("disciplinas.txt", "r");
+    if (!fp)
+    {
+        printf("Erro ao abrir o arquivo\n");
+        return;
+    }
+
+    fseek(fp, 0*sizeof(disciplinas), SEEK_END);
+    tam = ftell(fp)/sizeof(disciplinas);
+    rewind(fp);
+
+    
+    pa = (disciplinas*) malloc(tam*sizeof(disciplinas));
+    if(!pa)
+    {
+        printf("Erro ao alocar");
+        return;
+    }
+    fread(pa, sizeof(disciplinas), tam, fp);
+    fclose(fp);
+
+
+    for(i=0; i<tam; i++)
+    {
+        printf("%d)Codigo de disciplina: %d\nNome: %s\n", i+1, pa[i].codigo, pa[i].nome);
+    }
+
+    printf("Digite o numero respectivo a disciplina que deseja remover\n");
+    scanf("%d", &i);
+    i--;
+    tam--;
+
+    while(i <= tam)
+    {
+        pa[i] = pa[i+1];
+        i++;
+    }
+
+    pa = (disciplinas*) realloc(pa, tam*sizeof(disciplinas));
+    fp = fopen("disciplinas.txt", "w");
+    if(!fp)
+    {
+        printf("Erro ao abir oo arquivo\n");
+        return;
+    }
+
+    
+    fwrite(pa, sizeof(disciplinas), tam, fp);
+    fclose(fp);
+    free(pa);
+    printf("Remocao realizada com sucesso\n");
+    system("pause");
 }
 
 void cadastrarNotas(){
