@@ -30,9 +30,9 @@ struct notas{
 };
 
 typedef struct alunos{
-    char nome[20], endereco[20];
+    char nome[20], endereco[20],telefone[17];
 
-    int matricula, telefone;
+    int matricula;
 }alunos;
 typedef struct disciplinas {
     char nome[50];
@@ -196,7 +196,7 @@ int main(){
 
                     printf("_____________________________________________\n\n");
 
-                    printf("Digite o numero respectivo ao que deseja fazer:\n");
+                    printf("Digite o numero respectivo ao que deseja fazer:\n->");
 
                     scanf("%d", &confirma_saida);
 
@@ -245,7 +245,7 @@ void menuPrincipal()
 
           printf("_____________________________________________\n\n");
 
-          printf("Digite o numero respectivo ao que deseja fazer:\n");
+          printf("Digite o numero respectivo ao que deseja fazer:\n->");
 
 
 }
@@ -270,7 +270,7 @@ void menuAlunos()
 
      printf("_____________________________________________\n\n");
 
-     printf("Digite o numero respectivo ao que deseja fazer:\n");
+     printf("Digite o numero respectivo ao que deseja fazer:\n->");
 }
 
 void menuNotas()
@@ -293,7 +293,7 @@ void menuNotas()
 
             printf("_____________________________________________\n\n");
 
-            printf("Digite o numero respectivo ao que deseja fazer:\n");
+            printf("Digite o numero respectivo ao que deseja fazer:\n->");
 
 }
 
@@ -317,7 +317,7 @@ void menuDisciplinas()
 
      printf("_____________________________________________\n\n");
 
-     printf("Digite o numero respectivo ao que deseja fazer:\n");
+     printf("Digite o numero respectivo ao que deseja fazer:\n->");
 }
 
 void cadastraAluno(){
@@ -327,30 +327,31 @@ void cadastraAluno(){
     printf("_______________________"
                "______________________\n\n");
     printf("-------------cadastro de aluno-------------\n\n");
-    printf("Digite o nome do aluno:\n");
+    printf("Digite o nome do aluno:\n->");
 
     setbuf(stdin, NULL);
     gets(aluno_cad.nome);
 
-    printf("\nInsira o endereço do aluno:\n");
+    printf("\nInsira o endereco do aluno:\n->");
 
     setbuf(stdin,  NULL);
     gets(aluno_cad.endereco);
 
-    printf("\ninsira o numero de matricula:\n");
+    printf("\nInsira o numero de matricula:\n->");
 
     scanf("%d", &aluno_cad.matricula);
 
-    printf("\ninsira o telefone (somente numeros):\n");
+    printf("\nInsira o telefone desta forma -> (ddd) 9 9999-9999:\n->");
 
-     scanf("%d", &aluno_cad.telefone);
+    setbuf(stdin,  NULL);
+    gets(aluno_cad.telefone);
 
     fp = fopen("arq_alunos.txt", "a");
 
       if(fp == NULL){
 
-        printf("\nErro a fazer o cadastro, tente novamente"
-               "em outro momento");
+        printf("\nErro ao abrir o arquivo, impossivel"
+               " concluir cadastro!");
      return;
       }
     fwrite(&aluno_cad, sizeof(alunos), 1, fp);
@@ -372,7 +373,7 @@ void editarAluno(){
 
     fp = fopen("arq_alunos.txt", "r");
     if(!fp){
-        printf("Erro ao acessar o arquivo, impossivel prosseguir com alteração");
+        printf("Erro ao acessar o arquivo, impossivel prosseguir com alteracao");
         return;
     }
     fseek(fp, 0, 2);
@@ -384,7 +385,7 @@ void editarAluno(){
     p = (alunos *) malloc(tam * sizeof(alunos));
 
     if(!p){
-        printf("Erro ao alocar memoria, impossivel prosseguir com alteração");
+        printf("Erro ao alocar memoria, impossivel prosseguir com alteracao");
         return;
     }
 
@@ -397,40 +398,41 @@ void editarAluno(){
     for(i=0; i<tam; i++){
       printf("__________________________________________\n");
 
-        printf("%d - %s - %s - %d - %d\n", i+1, p[i].nome,
+        printf("%d - %s - %s - %d - %s\n", i+1, p[i].nome,
                 p[i].endereco, p[i].matricula, p[i].telefone);
 
 
 
     }
-    printf("Digite o numero respectivo ao do aluno que deseja editar\n");
+    printf("\nDigite o numero respectivo ao do aluno que deseja editar\n->");
 
     scanf("%d", &i);
 
     i--;
 
-    printf("Digite o nome do aluno:\n");
+    printf("Digite o nome do aluno:\n->");
 
     setbuf(stdin, NULL);
     gets(p[i].nome);
 
-    printf("\nInsira o endereço do aluno:\n");
+    printf("\nInsira o endereço do aluno:\n->");
 
     setbuf(stdin,  NULL);
     gets(p[i].endereco);
 
-    printf("\ninsira o numero de matricula:\n");
+    printf("\ninsira o numero de matricula:\n->");
 
     scanf("%d", &p[i].matricula);
 
-    printf("\ninsira o telefone (somente numeros):\n");
+    printf("\nInsira o telefone desta forma\n  (ddd) 9 9999-9999:\n->");
 
-    scanf("%d", &p[i].telefone);
+    setbuf(stdin,  NULL);
+    gets(p[i].telefone);
 
     fp = fopen("arq_alunos.txt", "w");
     
     if(!p){
-        printf("Erro ao acessar arquivo, impossivel prosseguir com alteração");
+        printf("Erro ao acessar arquivo, impossivel prosseguir com alteracao");
         return;
     }
    
@@ -482,7 +484,7 @@ void consultaAluno(){
     for(i=0; i<tam; i++){
       printf("__________________________________________\n");
 
-        printf("%s - %s - %d - %d\n", p[i].nome,
+        printf("%s - %s - %d - %s\n", p[i].nome,
                 p[i].endereco, p[i].matricula, p[i].telefone);
 
 
@@ -520,10 +522,19 @@ void removeAluno(){
     fread(p, sizeof(alunos), tam, fp);
     
     fclose(fp);
+    printf("__________________________________________\n");
+    printf("Nome - Endereco - Matricula -- telefone\n");
+    for(i=0; i<tam; i++){
+      printf("__________________________________________\n");
+
+        printf("%s - %s - %d - %s\n", p[i].nome,
+                p[i].endereco, p[i].matricula, p[i].telefone);
+
+
+
+    }
     
-    consultaAluno();
-    
-    printf("digite o numero respectivo ao que deseja remover\n");
+    printf("digite o numero respectivo ao que deseja remover\n->");
     scanf("%d", &posi);
     
     posi--;
@@ -561,10 +572,10 @@ void cadastraDisciplina()
     disciplinas bufdisc;
     FILE *fp;
     
-    printf("Digite o nome da disciplina:\n");
+    printf("Digite o nome da disciplina:\n->");
     setbuf(stdin, NULL);
     gets(bufdisc.nome);
-    printf("Digite o codigo da disciplina:\n");
+    printf("Digite o codigo da disciplina:\n->");
     scanf("%d", &bufdisc.codigo);
                 
     fp = fopen("disciplinas.txt", "a");
@@ -588,8 +599,9 @@ void editaDisciplina()
     fp = fopen ("disciplinas.txt", "r");
     if (fp == NULL)
     {
-        printf("Erro na abertura do arquivo");
-        exit(1);
+        printf("Erro na abertura do arquivo, impossivel prosseguir com edicao!");
+        system("pause");
+        return;
     }
     fseek(fp, 0*sizeof(struct disciplinas), SEEK_END);
     tam_arq = ftell(fp)/sizeof(struct disciplinas);
@@ -601,8 +613,9 @@ void editaDisciplina()
     fp = fopen("disciplinas.txt", "w");
     if(fp == NULL)
     {
-        printf("Erro na abertura do arquivo");
-        exit(1);
+        printf("Erro na abertura do arquivo, impossivel prosseguir com edicao!");
+        system("pause");
+        return;
     }
 
     for(i=0; i<tam_arq; i++)
@@ -610,9 +623,9 @@ void editaDisciplina()
         printf("Disciplina: %s\n Codigo: %d\n\n", pd[i].nome, pd[i].codigo);
     }
     int cod_disc;
-    printf("Digite o codigo da disciplina que quer editar:\n");
+    printf("Digite o codigo da disciplina que quer editar:\n->");
     scanf("%d", &cod_disc);
-    printf("Digite o novo nome da disciplina:\n");
+    printf("Digite o novo nome da disciplina:\n->");
     for(i=0; i<tam_arq; i++)
     {
         if(cod_disc == pd[i].codigo)
@@ -638,8 +651,9 @@ void consultaDisciplina()
     fp = fopen ("disciplinas.txt", "r");
     if (fp == NULL)
     {
-        printf("Erro na abertura do arquivo");
-        exit(1);
+        printf("Erro na abertura do arquivo, impossivel fazer consulta!");
+        system("pause");
+        return;
     }
     fseek(fp, 0*sizeof(struct disciplinas), SEEK_END);
     tam_arq = ftell(fp)/sizeof(struct disciplinas);
@@ -665,7 +679,8 @@ void removeDisciplina()
     fp = fopen("disciplinas.txt", "r");
     if (!fp)
     {
-        printf("Erro ao abrir o arquivo\n");
+        printf("Erro ao abrir o arquivo, impossivel remover nota!\n");
+        system("pause");
         return;
     }
 
@@ -677,7 +692,8 @@ void removeDisciplina()
     pa = (disciplinas*) malloc(tam*sizeof(disciplinas));
     if(!pa)
     {
-        printf("Erro ao alocar");
+        printf("Erro ao alocar, impossivel remover disciplina!");
+        system("pause");
         return;
     }
     fread(pa, sizeof(disciplinas), tam, fp);
@@ -689,7 +705,7 @@ void removeDisciplina()
         printf(" %d) Codigo de disciplina: %d\nNome: %s\n\n", i+1, pa[i].codigo, pa[i].nome);
     }
 
-    printf("Digite o numero respectivo a disciplina que deseja remover\n");
+    printf("Digite o numero respectivo a disciplina que deseja remover\n->");
     scanf("%d", &i);
     i--;
     tam--;
@@ -704,7 +720,8 @@ void removeDisciplina()
     fp = fopen("disciplinas.txt", "w");
     if(!fp)
     {
-        printf("Erro ao abir oo arquivo\n");
+        printf("Erro ao abrir oo arquivo, impossivel remover disciplina!\n");
+        system("pause");
         return;
     }
 
@@ -724,8 +741,9 @@ void cadastrarNotas(){
     struct disciplinas *ptr;
     fp = fopen("arq_alunos.txt", "r");
         if(fp == NULL) {
-            printf("Erro na abertura do arquivo");
-            exit(1);
+            printf("Erro na abertura do arquivo, impossivel cadastrar nota!");
+            system("pause");
+            return;
         }
     fseek(fp,sizeof(alunos)*0,SEEK_END);
     tam = ftell(fp)/sizeof(alunos);
@@ -733,7 +751,7 @@ void cadastrarNotas(){
     pa = (alunos*)malloc(sizeof(alunos)*tam);
     fread(pa,sizeof(alunos),tam,fp);
     fclose(fp);
-    printf("Digite o numero de matricula que deseja cadastrar notas:\n");
+    printf("Digite o numero de matricula que deseja cadastrar notas:\n->");
         for(i=0;i<tam;i++){
             printf(" %s: %d\n", pa[i].nome,pa[i].matricula);
         }
@@ -742,8 +760,9 @@ void cadastrarNotas(){
     system("cls");
     fp = fopen("disciplinas.txt", "r");
         if(fp == NULL) {
-            printf("Erro na abertura do arquivo");
-            exit(1);
+            printf("Erro na abertura do arquivo, impossivel cadastrar nota!");
+            system("pause");
+            return;
         }
     fseek(fp,sizeof(struct disciplinas)*0,SEEK_END);
     tam = ftell(fp)/sizeof(struct disciplinas);
@@ -751,7 +770,7 @@ void cadastrarNotas(){
     ptr = (struct disciplinas*)malloc(sizeof(struct disciplinas)*tam);
     fread(ptr,sizeof(struct disciplinas),tam,fp);
     fclose(fp);
-    printf("Digite o codigo da disciplina em que deseja cadastrar a nota:\n");
+    printf("Digite o codigo da disciplina em que deseja cadastrar a nota:\n->");
           for(i=0;i<tam;i++){
               printf("--> %s: %d\n", ptr[i].nome,ptr[i].codigo);
           }
@@ -765,8 +784,9 @@ void cadastrarNotas(){
     scanf("%d", &buffer.frequencia);
     fp = fopen("notas.txt", "a");
         if(fp == NULL) {
-            printf("Erro na abertura do arquivo");
-            exit(1);
+            printf("Erro na abertura do arquivo,impossivel cadastrar nota!");
+            system("pause");
+            return;
         }
     fwrite(&buffer,sizeof(struct notas),1,fp);
     fclose(fp);
@@ -779,11 +799,11 @@ void editarNotas(){
     int i,tam,buffer_notas,buffer_notas2;
     struct disciplinas *ptr;
     struct notas buffer,*p;
-    printf("Digite o codigo da disciplina que deseja editar notas:\n");
     fp = fopen("disciplinas.txt", "r");
       if(fp == NULL) {
-                printf("Erro na abertura do arquivo");
-                exit(1);
+            printf("Erro na abertura do arquivo,impossivel editar nota!");
+            system("pause");
+            return;
       }
     fseek(fp,sizeof(struct disciplinas)*0,SEEK_END);
     tam = ftell(fp)/sizeof(struct disciplinas);
@@ -795,12 +815,14 @@ void editarNotas(){
             printf("  Disciplina: %s\n  Codigo da disciplina: %d\n\n", ptr[i].nome,ptr[i].codigo);
         }
     free(ptr);
+    printf("Digite o codigo da disciplina que deseja editar notas:\n->");
     scanf("%d", &buffer_notas);//vai guardar o código da disciplina para modificar uma específica.
     system("cls");
     fp = fopen("notas.txt","r");
         if(fp == NULL) {
-                printf("Erro na abertura do arquivo");
-                exit(1);
+            printf("Erro na abertura do arquivo,impossivel editar nota!");
+            system("pause");
+            return;
       }
     fseek(fp,sizeof(struct notas)*0,SEEK_END);
     tam = ftell(fp)/sizeof(struct notas);
@@ -815,16 +837,20 @@ void editarNotas(){
                 " Frequencia: %d%%\n\n",p[i].matricula,p[i].cod_disciplina, p[i].nota1,p[i].nota2,p[i].nota3,p[i].media,p[i].frequencia);
             }
         }
-    printf("Digite a matricula do aluno que deseja editar em notas:\n");
+    printf("Digite a matricula do aluno que deseja editar em notas:\n->");
     scanf("%d",&buffer_notas2);//vai pegar o aluno em que vai ser editado a nota.
     system("cls");
         for(i=0;i<tam;i++){
             if(buffer_notas2 == p[i].matricula && buffer_notas == p[i].cod_disciplina){
-                printf("|Alteracao da nota do aluno com matricula %d, na disciplina %d|\n",p[i].matricula,p[i].cod_disciplina);
-                printf("Digite as 3 novas notas:\n");
-                scanf("%f%f%f", &p[i].nota1,&p[i].nota2,&p[i].nota3);
+                printf("|Alteracao da nota do aluno com matricula %d, na disciplina %d|\n->",p[i].matricula,p[i].cod_disciplina);
+                printf("Digite a nota 1:\n->");
+                scanf("%f", &p[i].nota1);
+                printf("Digite a nota 2:\n->");
+                scanf("%f", &p[i].nota2);
+                printf("Digite a nota 3:\n->");
+                scanf("%f", &p[i].nota3);
                 p[i].media = calculo_media(p[i].nota1,p[i].nota2,p[i].nota3);
-                printf("Digite a frequencia(%%):\n");
+                printf("Digite a frequencia(%%):\n->");
                 scanf("%d",&p[i].frequencia);                                        
                 break;
             }
@@ -843,8 +869,9 @@ void consultarNotas(){
     struct notas *p;
     fp =  fopen("notas.txt", "r");
         if (fp == NULL){
-            printf("Erro na abertura do arquivo");
-            exit(1);
+            printf("Erro na abertura do arquivo, impossivel consultar nota!");
+            system("pause");
+            return;
         }
     fseek(fp, 0 * sizeof(struct notas), SEEK_END);
     tam = ftell(fp) / sizeof(struct notas);
@@ -868,8 +895,9 @@ void removeNotas(){
     fp = fopen ("disciplinas.txt", "r");
        if (fp == NULL)
        {
-           printf("Erro na abertura do arquivo");
-           exit(1);
+           printf("Erro na abertura do arquivo, impossivel remover notas");
+           system("pause");
+           return;
        }
     fseek(fp, 0*sizeof(struct disciplinas), SEEK_END);
     tam = ftell(fp)/sizeof(struct disciplinas);
@@ -885,11 +913,11 @@ void removeNotas(){
     free(ptr);
     fclose(fp);
     system("cls");
-    printf("Digite a matricula do aluno que quer remover em notas:\n");
     fp = fopen("notas.txt","r");
         if(fp == NULL) {
                 printf("Erro na abertura do arquivo");
-                exit(1);
+                system("pause");
+                return;
       }
     fseek(fp,sizeof(struct notas)*0,SEEK_END);
     tam = ftell(fp)/sizeof(struct notas);
@@ -913,7 +941,7 @@ void removeNotas(){
             }
         }
     pos = (int*)realloc(pos,sizeof(int)*(j+1));
-    printf("Digite a posicao do aluno que deseja remover em notas:\n");
+    printf("Digite a posicao do aluno que deseja remover em notas:\n->");
     scanf("%d",&i);
     i--;
     buffer_notas2 = pos[i];
@@ -926,8 +954,9 @@ void removeNotas(){
     p = (struct notas*)realloc(p,sizeof(struct notas)*tam);
     fp = fopen("notas.txt", "w");
         if(fp == NULL) {
-                printf("Erro na abertura do arquivo");
-                exit(1);
+                printf("Erro na abertura do arquivo, impossivel remover nota");
+                system("pause");
+                return;
       }
     fwrite(p,sizeof(struct notas),tam,fp);
     free(p);
