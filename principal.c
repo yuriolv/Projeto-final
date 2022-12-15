@@ -30,12 +30,12 @@ struct notas{
 };
 
 typedef struct alunos{
-    char nome[20], endereco[20],telefone[17];
+    char nome[70], endereco[70],telefone[17];
 
     int matricula;
 }alunos;
 typedef struct disciplinas {
-    char nome[50];
+    char nome[70];
     int codigo;
 } disciplinas;
 
@@ -109,6 +109,7 @@ int main(){
                             default:
                                 printf("Por favor digite apenas numeros"
                                     " de 1 a 5");
+                                system("pause");
 
                          };
 
@@ -144,6 +145,11 @@ int main(){
                                         system("cls");
                                         removeDisciplina();
                                     break;
+                                    case 5:
+                                    break;
+                                    default: 
+                                        printf("Por favor, digite apenas numeros de 1 a 5!");
+                                        system("pause");
                                 }
  }
                 break;
@@ -176,7 +182,8 @@ int main(){
                                     case 5 :
                                     break;
                                     default :
-                                        printf("Por favor, digite apenas numeros de 1 a 5");
+                                        printf("Por favor, digite apenas numeros de 1 a 5!");
+                                        system("pause");
                     }
             }
 
@@ -186,7 +193,7 @@ int main(){
 
                     system("cls");
 
-                    printf("_____________________________________________\n\n");
+                    printf("_____________________________________________________\n\n");
 
                     printf("Voce tem certeza que deseja sair do sistema?\n\n");
 
@@ -194,9 +201,9 @@ int main(){
 
                     printf("2 - Nao\n\n");
 
-                    printf("_____________________________________________\n\n");
+                    printf("_____________________________________________________\n\n");
 
-                    printf("Digite o numero respectivo ao que deseja fazer:\n->");
+                    printf("Digite o numero respectivo ao que deseja fazer:\n-> ");
 
                     scanf("%d", &confirma_saida);
 
@@ -229,23 +236,23 @@ void menuPrincipal()
     system("cls");
 
 
-      printf("----------Seja bem-vindo ao portal da UECE----------\n\n");
+    printf("----------Seja bem-vindo ao portal da UECE----------\n\n");
 
-          printf("_____________________________________________\n\n");
+    printf("____________________________________________________\n\n");
 
-          printf("-----------------Menu inicial----------------\n\n");
+    printf("---------------------Menu inicial-------------------\n\n");
 
-          printf("1 - Alunos\n");
+    printf("1 - Alunos\n");
 
-          printf("2 - Disciplinas\n");
+    printf("2 - Disciplinas\n");
 
-          printf("3 - Notas\n");
+    printf("3 - Notas\n");
 
-          printf("4 - Sair do sistema\n");
+    printf("4 - Sair do sistema\n");
 
-          printf("_____________________________________________\n\n");
+    printf("_____________________________________________\n\n");
 
-          printf("Digite o numero respectivo ao que deseja fazer:\n->");
+    printf("Digite o numero respectivo ao que deseja fazer:\n-> ");
 
 
 }
@@ -256,7 +263,7 @@ void menuAlunos()
 
      printf("_____________________________________________\n\n");
 
-     printf("-----------------Alunos----------------\n\n");
+     printf("--------------------Alunos-------------------\n\n");
 
      printf("1 - Cadastrar Alunos\n");
 
@@ -270,7 +277,7 @@ void menuAlunos()
 
      printf("_____________________________________________\n\n");
 
-     printf("Digite o numero respectivo ao que deseja fazer:\n->");
+     printf("Digite o numero respectivo ao que deseja fazer:\n-> ");
 }
 
 void menuNotas()
@@ -293,7 +300,7 @@ void menuNotas()
 
             printf("_____________________________________________\n\n");
 
-            printf("Digite o numero respectivo ao que deseja fazer:\n->");
+            printf("Digite o numero respectivo ao que deseja fazer:\n-> ");
 
 }
 
@@ -317,7 +324,7 @@ void menuDisciplinas()
 
      printf("_____________________________________________\n\n");
 
-     printf("Digite o numero respectivo ao que deseja fazer:\n->");
+     printf("Digite o numero respectivo ao que deseja fazer:\n-> ");
 }
 
 void cadastraAluno(){
@@ -326,22 +333,22 @@ void cadastraAluno(){
 
     printf("_______________________"
                "______________________\n\n");
-    printf("-------------cadastro de aluno-------------\n\n");
-    printf("Digite o nome do aluno:\n->");
+    printf("-------------Cadastro de Aluno-------------\n\n");
+    printf("Digite o nome do aluno:\n-> ");
 
     setbuf(stdin, NULL);
     gets(aluno_cad.nome);
 
-    printf("\nInsira o endereco do aluno:\n->");
+    printf("\nInsira o endereco do aluno:\n-> ");
 
     setbuf(stdin,  NULL);
     gets(aluno_cad.endereco);
 
-    printf("\nInsira o numero de matricula:\n->");
+    printf("\nInsira o numero de matricula:\n-> ");
 
     scanf("%d", &aluno_cad.matricula);
 
-    printf("\nInsira o telefone desta forma -> (ddd) 9 9999-9999:\n->");
+    printf("\nInsira o telefone desta forma ->  (ddd) 9 9999-9999:\n-> ");
 
     setbuf(stdin,  NULL);
     gets(aluno_cad.telefone);
@@ -386,45 +393,55 @@ void editarAluno(){
 
     if(!p){
         printf("Erro ao alocar memoria, impossivel prosseguir com alteracao");
+        system("pause");
         return;
     }
 
     fread(p, sizeof(alunos), tam, fp);
 
     fclose(fp);
+    i = -1;
+    while(i<=0 || i > tam){  
+        printf("____________________________________________________________________________________________________________\n");
+        printf("Num -\t\t     Nome\t\t\t-\t Endereco \t -  Matricula -     Telefone\n");
+        for(i=0; i<tam; i++){
+        printf("_____________________________________________________________________________________________________________\n");
 
-    printf("__________________________________________\n");
-    printf("Numero - Nome - Endereco - Matricula - telefone\n");
-    for(i=0; i<tam; i++){
-      printf("__________________________________________\n");
-
-        printf("%d - %s - %s - %d - %s\n", i+1, p[i].nome,
-                p[i].endereco, p[i].matricula, p[i].telefone);
+            printf("%-2d  -  %-40s - %-20s   -    %d    - %s\n", i+1, p[i].nome,
+                    p[i].endereco, p[i].matricula, p[i].telefone);
 
 
 
+        }
+        printf("_____________________________________________________________________________________________________________\n");
+
+        printf("\nDigite o numero respectivo ao do aluno que deseja editar\n-> ");
+
+        scanf("%d", &i);
+            if( i<=0 || i>tam){
+                printf("Digite apenas numeros contidos na sequencia!\n");
+                system("pause");
+                system("cls");
+            }
     }
-    printf("\nDigite o numero respectivo ao do aluno que deseja editar\n->");
-
-    scanf("%d", &i);
 
     i--;
 
-    printf("Digite o nome do aluno:\n->");
+    printf("Digite o nome do aluno:\n-> ");
 
     setbuf(stdin, NULL);
     gets(p[i].nome);
 
-    printf("\nInsira o endereço do aluno:\n->");
+    printf("\nInsira o endereco do aluno:\n-> ");
 
     setbuf(stdin,  NULL);
     gets(p[i].endereco);
 
-    printf("\ninsira o numero de matricula:\n->");
+    printf("\nInsira o numero de matricula:\n-> ");
 
     scanf("%d", &p[i].matricula);
 
-    printf("\nInsira o telefone desta forma\n  (ddd) 9 9999-9999:\n->");
+    printf("\nInsira o telefone desta forma\n  (ddd) 9 9999-9999:\n-> ");
 
     setbuf(stdin,  NULL);
     gets(p[i].telefone);
@@ -437,11 +454,10 @@ void editarAluno(){
     }
    
     fwrite(p, sizeof(alunos), tam, fp);
-   
-   
     fclose(fp);
     free(p);
-    
+    printf("Edicao realizada com sucesso!\n");
+    system("pause");
 }
 
 
@@ -479,17 +495,15 @@ void consultaAluno(){
     fread(p, sizeof(alunos), tam, fp);
     fclose(fp);
 
-    printf("__________________________________________\n");
-    printf("Nome - Endereco - Matricula -- telefone\n");
+    printf("________________________________________________________________________________________\n");
+    printf("\tNome \t\t       -\t Endereco \t- Matricula  -  Telefone\n");
     for(i=0; i<tam; i++){
-      printf("__________________________________________\n");
-
-        printf("%s - %s - %d - %s\n", p[i].nome,
+        printf("________________________________________________________________________________________\n");
+        printf("%-31s- %-20s   -    %d    - %s\n", p[i].nome,
                 p[i].endereco, p[i].matricula, p[i].telefone);
-
-
-
     }
+    
+    printf("________________________________________________________________________________________\n");
     system("pause");
 
     free(p);
@@ -514,29 +528,31 @@ void removeAluno(){
     
     p = (alunos *) malloc(tam*sizeof(alunos));
     if(!p){
-        printf("erro ao alocar memoria, impossivel excluir\n");
+        printf("Erro ao alocar memoria, impossivel excluir\n");
         system("pause");
         return;
         
     }
     fread(p, sizeof(alunos), tam, fp);
+    posi = -1;
+    while(posi<=0 || posi > tam){      
+        fclose(fp);
+        printf("___________________________________________________________________________________________________________\n");
+        printf("Num -\t\t     Nome\t\t\t-\t Endereco \t -  Matricula -     Telefone\n");
+        for(i=0; i<tam; i++){
+            printf("___________________________________________________________________________________________________________\n");
+            printf("%-2d  -  %-40s - %-20s   -    %d    - %s\n", i+1, p[i].nome,
+                    p[i].endereco, p[i].matricula, p[i].telefone);
+        }
     
-    fclose(fp);
-    printf("__________________________________________\n");
-    printf("Nome - Endereco - Matricula -- telefone\n");
-    for(i=0; i<tam; i++){
-      printf("__________________________________________\n");
-
-        printf("%s - %s - %d - %s\n", p[i].nome,
-                p[i].endereco, p[i].matricula, p[i].telefone);
-
-
-
-    }
-    
-    printf("digite o numero respectivo ao que deseja remover\n->");
+    printf("Digite o numero respectivo ao que deseja remover\n-> ");
     scanf("%d", &posi);
-    
+        if(posi<=0 || posi > tam){
+            printf("Por favor, digite apenas numeros contidos na sequencia!\n");
+            system("pause");
+            system("cls");
+        }
+    }
     posi--;
     
     tam--;
@@ -547,13 +563,7 @@ void removeAluno(){
     }
 
     p = (alunos *) realloc(p,tam*sizeof(alunos));
-    if(!p){
-        printf("erro ao realocar memoria, impossivel excluir\n");
-        system("pause");
-        return;
-        
-    }
-    
+
     fp = fopen("arq_alunos.txt", "w");
     
     fwrite(p, sizeof(alunos), tam, fp);
@@ -562,7 +572,7 @@ void removeAluno(){
     
     free(p);
     
-    printf("\naluno removido com sucesso!\n");
+    printf("\nAluno removido com sucesso!\n");
     
     system("pause"); 
 }
@@ -572,17 +582,18 @@ void cadastraDisciplina()
     disciplinas bufdisc;
     FILE *fp;
     
-    printf("Digite o nome da disciplina:\n->");
+    printf("Digite o nome da disciplina:\n-> ");
     setbuf(stdin, NULL);
     gets(bufdisc.nome);
-    printf("Digite o codigo da disciplina:\n->");
+    printf("Digite o codigo da disciplina:\n-> ");
     scanf("%d", &bufdisc.codigo);
                 
     fp = fopen("disciplinas.txt", "a");
     if( fp == NULL)
     {
-        printf("Erro na abertura o arquivo\n");
-        exit(1);
+        printf("Erro na abertura o arquivo, impossivel concluir cadastro!\n");
+        system("pause");
+        return;
     }
     fwrite(&bufdisc, sizeof(struct disciplinas), 1, fp);
     fclose(fp);
@@ -593,7 +604,7 @@ void cadastraDisciplina()
 void editaDisciplina()
 {
     FILE *fp;
-    int tam_arq, i;
+    int tam_arq, i,cont=0;
     disciplinas *pd;
 
     fp = fopen ("disciplinas.txt", "r");
@@ -618,24 +629,33 @@ void editaDisciplina()
         return;
     }
 
-    for(i=0; i<tam_arq; i++)
-    {
-        printf("Disciplina: %s\n Codigo: %d\n\n", pd[i].nome, pd[i].codigo);
+    printf("_________________________________________________________________\n");
+    printf("\t\tDisciplina\t\t-   Codigo da disciplina\n");
+       for(i=0; i<tam_arq; i++){       
+        printf("_________________________________________________________________\n");
+        printf("%-40s-\t %d\n", pd[i].nome, pd[i].codigo);
     }
+    printf("_________________________________________________________________\n");
     int cod_disc;
-    printf("Digite o codigo da disciplina que quer editar:\n->");
+    printf("Digite o codigo da disciplina que quer editar:\n-> ");
     scanf("%d", &cod_disc);
-    printf("Digite o novo nome da disciplina:\n->");
+    printf("Digite o novo nome da disciplina:\n-> ");
     for(i=0; i<tam_arq; i++)
     {
         if(cod_disc == pd[i].codigo)
         {   
+            cont++;
             setbuf(stdin, NULL);
             gets(pd[i].nome);
         }
     }
+        if(cont == 0){
+            printf("Disciplina nao encontrada!\n");
+            system("pause");
+            return;
+        }
     fwrite(pd, sizeof(struct disciplinas), tam_arq, fp);
-    printf("Alteracao realizada com sucesso\n");
+    printf("Alteracao realizada com sucesso!\n");
     free(pd);
     fclose(fp);
     system("pause");
@@ -660,11 +680,16 @@ void consultaDisciplina()
     fseek(fp, 0*sizeof(struct notas), SEEK_SET);
     pa = (struct disciplinas*) malloc(tam_arq*sizeof(struct disciplinas));
     fread(pa, sizeof(struct disciplinas), tam_arq, fp);
-
-    for(i=0; i<tam_arq; i++)
-    {
-        printf("Disciplina: %s\n Codigo: %d\n\n", pa[i].nome, pa[i].codigo);
+    
+    printf("_________________________________________________________________\n");
+    printf("\t\tDisciplina\t\t-   Codigo da disciplina\n");
+    for(i=0; i<tam_arq; i++){       
+        printf("_________________________________________________________________\n");
+        printf("%-40s-\t %d\n", pa[i].nome, pa[i].codigo);
     }
+    printf("_________________________________________________________________\n");
+
+    
     free(pa);
     fclose(fp);
     system("pause");
@@ -696,17 +721,30 @@ void removeDisciplina()
         system("pause");
         return;
     }
+
     fread(pa, sizeof(disciplinas), tam, fp);
     fclose(fp);
 
+    i = -1;
+    while(i<=0 || i>tam){
 
-    for(i=0; i<tam; i++)
-    {
-        printf(" %d) Codigo de disciplina: %d\nNome: %s\n\n", i+1, pa[i].codigo, pa[i].nome);
+        printf("_______________________________________________________________________\n");
+        printf("num -\t\tDisciplina\t\t       -  Codigo da disciplina\n");
+        for(i=0; i<tam; i++){
+            printf("_______________________________________________________________________\n");
+            printf("%-3d -  %-40s-\t %d\n", i+1, pa[i].nome, pa[i].codigo);
+        }
+        printf("_______________________________________________________________________\n");
+
+
+        printf("Digite o numero respectivo a disciplina que deseja remover\n-> ");
+        scanf("%d", &i);
+        if(i<=0 || i>tam){
+            printf("Digite um numero que esta na sequencia!\n");
+            system("pause");
+            system("cls");
+        }
     }
-
-    printf("Digite o numero respectivo a disciplina que deseja remover\n->");
-    scanf("%d", &i);
     i--;
     tam--;
 
@@ -729,7 +767,7 @@ void removeDisciplina()
     fwrite(pa, sizeof(disciplinas), tam, fp);
     fclose(fp);
     free(pa);
-    printf("Remocao realizada com sucesso\n");
+    printf("Remocao realizada com sucesso!\n");
     system("pause");
 }
 
@@ -751,10 +789,15 @@ void cadastrarNotas(){
     pa = (alunos*)malloc(sizeof(alunos)*tam);
     fread(pa,sizeof(alunos),tam,fp);
     fclose(fp);
-    printf("Digite o numero de matricula que deseja cadastrar notas:\n->");
+    printf("________________________________________________________\n");
+    printf("\t\tNome\t\t\t-  Matricula\n");
         for(i=0;i<tam;i++){
-            printf(" %s: %d\n", pa[i].nome,pa[i].matricula);
+            printf("________________________________________________________\n");
+            printf("%-40s-   %d\n", pa[i].nome,pa[i].matricula);
         }
+    printf("________________________________________________________\n");
+
+    printf("Digite o numero de matricula que deseja cadastrar notas:\n-> ");
     scanf("%d", &buffer.matricula);
     free(pa);
     system("cls");
@@ -770,15 +813,24 @@ void cadastrarNotas(){
     ptr = (struct disciplinas*)malloc(sizeof(struct disciplinas)*tam);
     fread(ptr,sizeof(struct disciplinas),tam,fp);
     fclose(fp);
-    printf("Digite o codigo da disciplina em que deseja cadastrar a nota:\n->");
+    printf("______________________________________________________________________\n");
+    printf("    Disciplina\t\t\t\t -\tCodigo da disciplina\n");
           for(i=0;i<tam;i++){
-              printf("--> %s: %d\n", ptr[i].nome,ptr[i].codigo);
+            printf("______________________________________________________________________\n");
+            printf("%-40s -\t%d\n", ptr[i].nome,ptr[i].codigo);
           }
+    printf("______________________________________________________________________\n");
+
+    printf("Digite o codigo da disciplina em que deseja cadastrar a nota:\n-> ");
     scanf("%d", &buffer.cod_disciplina);
     free(ptr);
     system ("cls");
-    printf("Digite as 3 notas: \n");
-    scanf("%f%f%f", &buffer.nota1,&buffer.nota2,&buffer.nota3);
+    printf("Digite a nota 1 : \n-> ");
+    scanf("%f", &buffer.nota1);
+    printf("Digite a nota 2: \n-> ");
+    scanf("%f",&buffer.nota2);
+    printf("Digite a nota 3 : \n-> ");
+    scanf("%f",&buffer.nota3);
     buffer.media = calculo_media(buffer.nota1,buffer.nota2,buffer.nota3);
     printf("Digite a frequencia do aluno(%%): \n");
     scanf("%d", &buffer.frequencia);
@@ -796,7 +848,7 @@ void cadastrarNotas(){
 
 void editarNotas(){
     FILE *fp;
-    int i,tam,buffer_notas,buffer_notas2;
+    int i,tam,buffer_notas,buffer_notas2,cont=0;
     struct disciplinas *ptr;
     struct notas buffer,*p;
     fp = fopen("disciplinas.txt", "r");
@@ -811,11 +863,17 @@ void editarNotas(){
     ptr = (struct disciplinas*)malloc(sizeof(struct disciplinas)*tam);
     fread(ptr,sizeof(struct disciplinas),tam,fp);
     fclose(fp);
+    printf("");
+
+        printf("____________________________________________________________\n");
+        printf("\tDisciplina\t\t  - \tCodigo\n");
         for(i=0;i<tam;i++){//mostra todas as disciplinas para editar uma nota qualquer.
-            printf("  Disciplina: %s\n  Codigo da disciplina: %d\n\n", ptr[i].nome,ptr[i].codigo);
+            printf("____________________________________________________________\n");
+            printf("%-30s  - \t %d\n\n", ptr[i].nome, ptr[i].codigo);
         }
+    printf("____________________________________________________________\n");
     free(ptr);
-    printf("Digite o codigo da disciplina que deseja editar notas:\n->");
+    printf("Digite o codigo da disciplina que deseja editar notas:\n-> ");
     scanf("%d", &buffer_notas);//vai guardar o código da disciplina para modificar uma específica.
     system("cls");
     fp = fopen("notas.txt","r");
@@ -831,30 +889,50 @@ void editarNotas(){
     fread(p,sizeof(struct notas),tam,fp);
     fclose(fp);
     printf("Alunos matriculados na disciplina %d:\n", buffer_notas);
-        for(i=0;i<tam;i++){
-            if(buffer_notas == p[i].cod_disciplina){//mostra todas as matriculas cadastradas naquela disciplina.
-                printf(" Matricula: %d\n Disciplina: %d\n Notas: %.1f %.1f %.1f\n Media: %.1f\n"
-                " Frequencia: %d%%\n\n",p[i].matricula,p[i].cod_disciplina, p[i].nota1,p[i].nota2,p[i].nota3,p[i].media,p[i].frequencia);
-            }
+    printf("____________________________________________________________________________\n");
+    printf("Matricula - Disciplina - Nota 1 - Nota 2 - Nota 3 - Media - Frequencia\n");
+    for(i=0;i<tam;i++){
+        if(buffer_notas == p[i].cod_disciplina){//mostra todas as matriculas cadastradas naquela disciplina.
+
+            cont++;
+            printf("____________________________________________________________________________\n");
+
+            printf("   %d\t  -    %d    -  %-6.1f-  %-6.1f-  %-6.1f-  %-5.1f-%6d%%\n\n", p[i].matricula, p[i].cod_disciplina,
+               p[i].nota1, p[i].nota2, p[i].nota3, p[i].media, p[i].frequencia);
         }
-    printf("Digite a matricula do aluno que deseja editar em notas:\n->");
+    }
+    printf("____________________________________________________________________________\n");
+
+    if(cont==0){
+        printf("\nDisciplina nao encontrada ou nenhum aluno cadastrado nesta disciplina!\n");
+        system("pause");
+        return;
+    }
+    printf("Digite a matricula do aluno que deseja editar em notas:\n-> ");
     scanf("%d",&buffer_notas2);//vai pegar o aluno em que vai ser editado a nota.
     system("cls");
+    cont = 0;
         for(i=0;i<tam;i++){
             if(buffer_notas2 == p[i].matricula && buffer_notas == p[i].cod_disciplina){
-                printf("|Alteracao da nota do aluno com matricula %d, na disciplina %d|\n->",p[i].matricula,p[i].cod_disciplina);
-                printf("Digite a nota 1:\n->");
+                cont++;
+                printf("|Alteracao da nota do aluno com matricula %d, na disciplina %d|\n-> ",p[i].matricula,p[i].cod_disciplina);
+                printf("Digite a nota 1:\n-> ");
                 scanf("%f", &p[i].nota1);
-                printf("Digite a nota 2:\n->");
+                printf("Digite a nota 2:\n-> ");
                 scanf("%f", &p[i].nota2);
-                printf("Digite a nota 3:\n->");
+                printf("Digite a nota 3:\n-> ");
                 scanf("%f", &p[i].nota3);
                 p[i].media = calculo_media(p[i].nota1,p[i].nota2,p[i].nota3);
-                printf("Digite a frequencia(%%):\n->");
+                printf("Digite a frequencia(%%):\n-> ");
                 scanf("%d",&p[i].frequencia);                                        
                 break;
             }
         }
+    if(cont == 0){
+        printf("Matricula nao encontrada!\n");
+        system("pause");
+        return;
+    }
     fp = fopen("notas.txt", "w");
     fwrite(p,sizeof(struct notas),tam,fp);
     printf("Edicao realizada com sucesso!\n");
@@ -878,10 +956,14 @@ void consultarNotas(){
     rewind(fp);
     p = (struct notas *)malloc(sizeof(struct notas) * tam);
     fread(p, sizeof(struct notas), tam, fp);
+    printf("_______________________________________________________________________\n");
+    printf("Matricula - Disciplina - Nota 1 - Nota 2 - Nota 3 - Media - Frequencia\n");
         for (i = 0; i < tam; i++){
-              printf("Matricula: %d\nDisciplina: %d\nNotas: %.1f %.1f %.1f\nMedia: %.1f\n"
-              "Frequencia: %d%%\n\n", p[i].matricula, p[i].cod_disciplina, p[i].nota1, p[i].nota2, p[i].nota3, p[i].media, p[i].frequencia);
+            printf("_______________________________________________________________________\n");
+            printf("   %d\t  -    %d    -  %-6.1f-  %-6.1f-  %-6.1f-  %-5.1f-%6d%%\n\n", p[i].matricula, p[i].cod_disciplina,
+               p[i].nota1, p[i].nota2, p[i].nota3, p[i].media, p[i].frequencia);
         }
+    printf("_______________________________________________________________________\n");
     free(p);
     fclose(fp);
     system("pause");
@@ -889,7 +971,7 @@ void consultarNotas(){
 
 void removeNotas(){
     FILE *fp;
-    int tam,i,buffer_notas,buffer_notas2,j=0,*pos;
+    int tam,i,buffer_notas,buffer_notas2,j=0,*pos,cont=0;
     struct disciplinas *ptr;
     struct notas *p;
     fp = fopen ("disciplinas.txt", "r");
@@ -904,11 +986,16 @@ void removeNotas(){
     rewind(fp);
     ptr = (struct disciplinas*) malloc(tam*sizeof(struct disciplinas));
     fread(ptr, sizeof(struct disciplinas), tam, fp);
-    printf("Digite o codigo da disciplina em que deseja remover notas:\n");
-    for(i=0; i<tam; i++)
-        {
-            printf(" Disciplina: %s\n Codigo: %d\n\n", ptr[i].nome, ptr[i].codigo);
+    
+    printf("____________________________________________________________\n");
+    printf("\tDisciplina\t\t  - \tCodigo\n");
+    for(i=0; i<tam; i++){
+        printf("____________________________________________________________\n");
+        printf("%-30s  - \t %d\n\n", ptr[i].nome, ptr[i].codigo);
         }
+    printf("____________________________________________________________\n");
+
+    printf("Digite o codigo da disciplina em que deseja remover notas:\n");
     scanf("%d", &buffer_notas);
     free(ptr);
     fclose(fp);
@@ -925,24 +1012,44 @@ void removeNotas(){
     p = (struct notas*)malloc(sizeof(struct notas)*tam);
     fread(p,sizeof(struct notas),tam,fp);
     fclose(fp);
-    printf("Alunos matriculados na disciplina %d:\n", buffer_notas);
     pos = (int*)malloc(sizeof(int)*tam);
         if(!pos){
             printf("Nao foi possivel concluir a remocao");
             system("pause");
             return;
         }
-        for(i=0;i<tam;i++){
-            if(buffer_notas == p[i].cod_disciplina){//mostra todas as matriculas cadastradas naquela disciplina.
-                pos[j] = i;
-                j++;
-                printf(" %d)Matricula: %d\n Disciplina: %d\n Notas: %.1f %.1f %.1f\n Media: %.1f\n"
-                " Frequencia: %d%%\n\n",j,p[i].matricula,p[i].cod_disciplina, p[i].nota1,p[i].nota2,p[i].nota3,p[i].media,p[i].frequencia);
+    i = -1;
+        while( i <= 0 || i > tam){ 
+            j = 0;
+            printf("____________________________________________________________________________\n");
+            printf("num - Matricula - Disciplina - Nota 1 - Nota 2 - Nota 3 - Media - Frequencia\n");
+            
+            for(i=0;i<tam;i++){
+                if(buffer_notas == p[i].cod_disciplina){//mostra todas as matriculas cadastradas naquela disciplina.
+                    pos[j] = i;
+                    j++;
+                    printf("____________________________________________________________________________\n");
+                    printf("%-4d-    %-7d-    %d    -  %-6.1f-  %-6.1f-  %-6.1f-  %-5.1f-%6d%%\n\n",j, p[i].matricula, p[i].cod_disciplina,
+                    p[i].nota1, p[i].nota2, p[i].nota3, p[i].media, p[i].frequencia);
+                }
+            }
+            printf("____________________________________________________________________________\n");
+
+            if(j == 0){
+                system("cls");
+                printf("Nenhum aluno cadastrado nesta disciplina!\n");
+                system("pause");
+                return;
+            }
+            pos = (int*)realloc(pos,sizeof(int)*(j+1));
+            printf("Digite a posicao do aluno que deseja remover em notas:\n-> ");
+            scanf("%d",&i);
+            if(i <= 0 || i > tam){
+                printf("Por favor, digite apenas numeros contidos na sequencia!\n");
+                system("pause");
+                system("cls");
             }
         }
-    pos = (int*)realloc(pos,sizeof(int)*(j+1));
-    printf("Digite a posicao do aluno que deseja remover em notas:\n->");
-    scanf("%d",&i);
     i--;
     buffer_notas2 = pos[i];
     free(pos);
